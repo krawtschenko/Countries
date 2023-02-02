@@ -55,7 +55,9 @@ export const Header = React.memo(() => {
 
     useEffect(() => {
         const state: string = restoreState<string>('theme', theme)
-        setTheme(state)
+        if (state) {
+            setTheme(state)
+        }
         // eslint-disable-next-line
     }, [])
 
