@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {FC} from "react";
+import React from "react";
 
 const Wrapper = styled.article`
   border-radius: var(--radii);
@@ -44,7 +44,7 @@ const CardListItem = styled.li`
   }
 `;
 
-export const Card: FC<CardPropsType> = ({img, name, info = [], onClick}) => {
+export const Card: React.FC<CardPropsType> = ({img, name, info = [], onClick}) => {
     return (
         <Wrapper onClick={onClick}>
             <CardImage src={img} alt={name}/>

@@ -1,15 +1,23 @@
-import React from 'react';
-import './App.css';
-import {Header} from "./components/Header";
-import {Main} from "./components/Main";
-import {Controls} from "./components/Controls";
+import {useState} from 'react';
+import {Routes, Route} from 'react-router-dom';
+import {Header} from './components/Header';
+import {Main} from './components/Main';
+import {Country, Details} from './pages/Details';
+import {NotFound} from './pages/NotFound';
+import {HomePage} from "./pages/HomePage";
 
 function App() {
+    const [countries, setCountries] = useState<Country[]>([]);
+
     return (
         <>
             <Header/>
             <Main>
-                <Controls onSearch={() => alert('Hello')}/>
+                <Routes>
+                    <Route path="/" element={<HomePage countries={countries} setCountries={setCountries}/>}/>
+                    <Route path="/country/:name" element={<Details/>}/>
+                    <Route path="*" element={<NotFound/>}/>
+                </Routes>
             </Main>
         </>
     );

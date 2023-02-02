@@ -41,4 +41,4 @@ export const CustomSelect = styled(Select).attrs({
   & > div[id] {
     background-color: var(--colors-ui-base);
   }
-`;
+`

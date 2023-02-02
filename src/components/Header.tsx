@@ -1,7 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {IoMoonOutline, IoMoonSharp} from "react-icons/io5";
+import {IoSunnyOutline, IoMoonSharp} from "react-icons/io5";
 import styled from "styled-components";
 import {Container} from "./Container";
+import {Link} from "react-router-dom";
+import {restoreState, saveState} from "../localStorage/localStorage";
 
 const HeaderEl = styled.header`
   box-shadow: var(--shadow);
@@ -15,13 +17,14 @@ const Wrapper = styled.div`
   padding: 2rem 0;
 `;
 
-const Title = styled.a.attrs({
+const Title = styled(Link).attrs({
     to: '/',
 })`
   color: var(--colors-text);
   font-size: var(--fs-sm);
   text-decoration: none;
   font-weight: var(--fw-bold);
+  cursor: pointer;
 `;
 
 const ModeSwitcher = styled.div`
@@ -40,12 +43,20 @@ const ThemeName = styled.span`
 
 export const Header = React.memo(() => {
     const [theme, setTheme] = useState<string>('light');
-    const toggleTheme = useCallback(() => setTheme(theme === 'light' ? 'dark' : 'light'), [theme]);
+    const toggleTheme = useCallback(() => {
+        const currentTheme = theme === 'light' ? 'dark' : 'light'
+        setTheme(currentTheme)
+        saveState<string>('theme', currentTheme)
+    }, [theme]);
 
     useEffect(() => {
-        // Встановлюємо атрібут для body, коли міняється theme
         document.body.setAttribute('data-theme', theme);
     }, [theme]);
+
+    useEffect(() => {
+        const state: string = restoreState<string>('theme', theme)
+        setTheme(state)
+    }, [])
 
     return (
         <HeaderEl>
@@ -54,8 +65,8 @@ export const Header = React.memo(() => {
                     <Title>The World Is Yours</Title>
                     <ModeSwitcher onClick={toggleTheme}>
                         {theme === 'light'
-                            ? <IoMoonOutline size={14}/>
-                            : <IoMoonSharp size={14}/>
+                            ? <IoSunnyOutline size={16}/>
+                            : <IoMoonSharp size={16}/>
                         }
                         <ThemeName>{theme} Theme</ThemeName>
                     </ModeSwitcher>
